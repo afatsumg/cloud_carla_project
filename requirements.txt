@@ -1,0 +1,5 @@
+pyyaml
+numpy
+opencv-python
+carla==0.9.15  # CARLA versiyonunu sunucuyla aynı tutmalıyız
+boto3
