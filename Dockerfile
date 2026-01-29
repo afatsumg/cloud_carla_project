@@ -1,7 +1,7 @@
-# 1. Temel imaj olarak hafif bir Python imajı seçiyoruz
+# 1. Base image: lightweight Python 3.9
 FROM python:3.9-slim
 
-# 2. Sistem bağımlılıklarını kur (OpenCV ve CARLA API için gerekli kütüphaneler)
+# 2. System dependencies installation (required for OpenCV and CARLA API)
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -9,19 +9,19 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Çalışma dizinini ayarla
+# 3. Set working directory
 WORKDIR /app
 
-# 4. Bağımlılıkları kopyala ve kur
+# 4. Copy and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Proje dosyalarını içeri aktar
+# 5. Copy project files
 COPY src/ ./src/
 COPY scenarios/ ./scenarios/
 
-# 6. Çıkış verileri için bir klasör oluştur (S3'e gitmeden önceki durak)
+# 6. Create output directory (staging area before S3 upload)
 RUN mkdir /app/output
 
-# 7. Kodumuzu çalıştıralım
+# 7. Run main simulation
 CMD ["python", "src/main.py"]

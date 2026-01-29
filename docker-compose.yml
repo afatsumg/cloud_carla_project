@@ -1,7 +1,7 @@
 services:
   carla-server:
     image: carlasim/carla:0.9.15
-    # Headless (ekransız) modda çalıştırma komutu
+    # Headless (no GUI) mode with Vulkan rendering and no sound
     command: /bin/bash -c "./CarlaUE4.sh -vulkan -RenderOffScreen -nosound"
     ports:
       - "2000-2002:2000-2002"
@@ -14,7 +14,7 @@ services:
               capabilities: [gpu]
 
   carla-client:
-    image: carla-pipeline-client # Bu imajı serverda build edeceğiz veya DockerHub'dan çekeceğiz
+    image: carla-pipeline-client # Build this image on server or pull from DockerHub
     build: .
     depends_on:
       - carla-server
