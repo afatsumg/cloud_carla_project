@@ -1,0 +1,38 @@
+scenario_name: "aeb_pedestrian_test_01"
+map: "Town01" # Town01 has good straight roads for AEB
+weather: "ClearNoon"
+
+# MODE SELECTION: 
+# 'sensor'      -> Heavy calculation (Images + Lidar + JSON)
+# 'object_list' -> Light calculation (JSON only, no Images)
+simulation_mode: "object_list" 
+
+duration: 15.0 # Seconds
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  # Initial speed in km/h (Applied after spawn)
+  target_speed: 40.0 
+
+adversary:
+  # The obstacle (Target)
+  type: "walker.pedestrian.0001" 
+  behavior: "stationary" # Options: stationary, moving_slow
+  spawn_dist: 40.0 # Meters ahead of the ego vehicle
+
+sensors:
+  # Used only if simulation_mode is 'sensor'
+  camera:
+    image_size_x: 1920
+    image_size_y: 1080
+    fov: 110
+  lidar:
+    channels: 64
+    range: 100
+
+# METRIC SELECTION:
+# Define which metrics to calculate and log in metrics.json
+metrics:
+  - "distance_to_adversary"
+  - "ttc"       # Time To Collision
+  - "ego_speed"
