@@ -1,0 +1,23 @@
+scenario_name: "aeb_pedestrian_test_05_multiple_pedestrians"
+map: "Town01"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 18.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 40.0
+
+adversary:
+  type: "walker.pedestrian.0001"
+  behavior: "group_crossing"
+  spawn_dist: 40.0
+  count: 3
+  pattern: "staggered"   # staggered group crossing
+  speed: 1.5
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "brake_applied"
+  - "collision"

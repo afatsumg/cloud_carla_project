@@ -1,0 +1,21 @@
+scenario_name: "aeb_pedestrian_test_09_high_speed"
+map: "Town02"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 12.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 60.0
+
+adversary:
+  type: "walker.pedestrian.0002"
+  behavior: "moving_slow"
+  spawn_dist: 50.0
+  speed: 1.5
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "collision"
+  - "ego_speed"

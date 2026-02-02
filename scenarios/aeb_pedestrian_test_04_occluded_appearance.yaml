@@ -1,0 +1,23 @@
+scenario_name: "aeb_pedestrian_test_04_occluded_appearance"
+map: "Town03"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 16.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 50.0
+
+adversary:
+  type: "walker.pedestrian.0001"
+  behavior: "sudden_appearance"   # appears from behind occlusion
+  spawn_dist: 25.0
+  spawn_side: "right"
+  start_time: 3.0    # seconds after simulation start
+  speed: 3.0
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "collision"
+  - "ego_speed"

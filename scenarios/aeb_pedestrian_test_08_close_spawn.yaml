@@ -1,0 +1,19 @@
+scenario_name: "aeb_pedestrian_test_08_close_spawn"
+map: "Town01"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 10.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 20.0
+
+adversary:
+  type: "walker.pedestrian.0001"
+  behavior: "stationary"
+  spawn_dist: 10.0   # very close spawn to create tight stopping requirement
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "brake_applied"

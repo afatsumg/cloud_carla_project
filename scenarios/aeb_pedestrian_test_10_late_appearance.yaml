@@ -1,0 +1,21 @@
+scenario_name: "aeb_pedestrian_test_10_late_appearance"
+map: "Town01"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 15.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 45.0
+
+adversary:
+  type: "walker.pedestrian.0001"
+  behavior: "delayed_crossing"
+  spawn_dist: 60.0
+  start_time: 5.0   # appears late into the scenario
+  speed: 2.0
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "collision"

@@ -1,0 +1,21 @@
+scenario_name: "aeb_pedestrian_test_02_crossing_fast"
+map: "Town01"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 12.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 40.0
+
+adversary:
+  type: "walker.pedestrian.0001"
+  behavior: "moving_fast"   # runs across the road
+  spawn_dist: 45.0
+  crossing_direction: "left_to_right"
+  speed: 5.0
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "ego_speed"

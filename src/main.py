@@ -27,8 +27,16 @@ def run_simulation():
         return
     
     config = load_config(config_path)
-    print(f"--- [MAIN] Scenario Name: {config.get('scenario_name')}")
-    print(f"--- [MAIN] Simulation Mode: {config.get('simulation_mode')}")
+    # Use ScenarioParser for safer access and validation
+    from parser import ScenarioParser
+    parser = ScenarioParser(config_path)
+    valid, errors = parser.validate()
+    if not valid:
+        print(f"--- [ERROR] Scenario validation failed: {errors}")
+        return
+
+    print(f"--- [MAIN] Scenario Name: {parser.get_scenario_name()}")
+    print(f"--- [MAIN] Simulation Mode: {parser.get_simulation_mode()}")
 
     # --- 2. SETUP DIRECTORIES ---
     output_dir = "/app/output"
@@ -45,27 +53,31 @@ def run_simulation():
     
     # Initialize Metric Calculator
     metric_calculator = MetricCalculator()
-    # Get active metrics list from YAML
-    active_metrics = config.get('metrics', [])
+    # Get active metrics list from YAML (via parser)
+    active_metrics = parser.get_metrics()
 
     metrics_log = []
 
     try:
         # --- 4. SETUP WORLD & ACTORS ---
-        if not sim.setup_world(config['map'], config['weather']):
+        if not sim.setup_world(parser.get_map(), parser.get_weather()):
             print("--- [ERROR] World setup failed.")
             return
             
-        sim.spawn_actors(config['ego_vehicle'], config['adversary'])
+        # Use parser getters for actor configs (keeps compatibility with single or simple dicts)
+        sim.spawn_actors(parser.get_ego_vehicle(), parser.get_adversary())
         
         # Attach sensors (Camera/Lidar) OR just prepare Object List recorder
+        # If sensor config exists, you can pass it to sim.attach_sensors in future
         sim.attach_sensors()
 
-        # Apply initial speed to Ego Vehicle
-        sim.apply_speed(config['ego_vehicle']['target_speed'])
+        # Apply initial speed to Ego Vehicle (if specified)
+        ego = parser.get_ego_vehicle()
+        if ego and 'target_speed' in ego:
+            sim.apply_speed(ego['target_speed'])
 
         # --- 5. SIMULATION LOOP ---
-        duration = config.get('duration', 10.0)
+        duration = parser.get_duration()
         fps = 10
         total_frames = int(duration * fps)
         
@@ -91,9 +103,11 @@ def run_simulation():
 
             # Optional: Real-time console log for debugging
             if frame % 10 == 0:
-                dist = current_metrics.get('distance_to_adversary', 'N/A')
-                ttc = current_metrics.get('ttc', 'N/A')
-                print(f"Frame {frame}: Dist={dist}m, TTC={ttc}s")
+                dist = current_metrics.get('distance_to_adversary')
+                ttc = current_metrics.get('ttc')
+                dist_str = f"{dist}m" if isinstance(dist, (int, float)) else 'N/A'
+                ttc_str = f"{ttc}s" if isinstance(ttc, (int, float)) else 'N/A'
+                print(f"Frame {frame}: Dist={dist_str}, TTC={ttc_str}")
 
             time.sleep(1.0 / fps) # Sync with real time
 

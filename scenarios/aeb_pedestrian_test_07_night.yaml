@@ -1,0 +1,30 @@
+scenario_name: "aeb_pedestrian_test_07_night"
+map: "Town01"
+weather: "Midnight"
+simulation_mode: "object_list"
+duration: 12.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 30.0
+
+adversary:
+  type: "walker.pedestrian.0002"
+  behavior: "moving_fast"
+  spawn_dist: 36.0
+  speed: 4.0
+
+sensors:
+  camera:
+    image_size_x: 1920
+    image_size_y: 1080
+    fov: 110
+  lidar:
+    channels: 64
+    range: 100
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "detection_confidence"
+  - "ego_speed"

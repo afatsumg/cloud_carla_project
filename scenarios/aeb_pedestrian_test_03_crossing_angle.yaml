@@ -1,0 +1,22 @@
+scenario_name: "aeb_pedestrian_test_03_crossing_angle"
+map: "Town02"
+weather: "ClearNoon"
+simulation_mode: "object_list"
+duration: 14.0
+
+ego_vehicle:
+  model: "vehicle.tesla.model3"
+  target_speed: 30.0
+
+adversary:
+  type: "walker.pedestrian.0002"
+  behavior: "moving_slow"
+  spawn_dist: 35.0
+  crossing_direction: "diagonal"
+  angle_deg: 30   # crossing angle relative to road
+  speed: 1.8
+
+metrics:
+  - "distance_to_adversary"
+  - "ttc"
+  - "brake_applied"
